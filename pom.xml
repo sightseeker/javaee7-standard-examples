@@ -4,21 +4,23 @@
     <groupId>com.sightseekerstudio</groupId>
     <artifactId>javaee7-standard-examples</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>war</packaging>
     <name>Java EE 7 標準 Example コード</name>
     <description>Java EE 7 標準API だけを使用したExampleコード</description>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <version.wildfly-swarm>2017.9.5</version.wildfly-swarm>
         <version.jacoco>0.7.5.201505241946</version.jacoco>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
-    
+
     <organization>
         <name>SightSeekerStudio.com</name>
         <url>http://www.sightseekerstudio.com/</url>
     </organization>
-    
+
     <developers>
         <developer>
             <id>sightseeker</id>
@@ -28,26 +30,26 @@
             <url>http://www.sightseekerstudio.com/</url>
         </developer>
     </developers>
-    
+
     <scm>
         <developerConnection>scm:git:https://github.com/sightseeker/javaee7-standard-examples.git</developerConnection>
         <url>https://github.com/sightseeker/javaee7-standard-examples</url>
         <tag>HEAD</tag>
     </scm>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.wildfly.bom</groupId>
-                <artifactId>wildfly-javaee7-with-tools</artifactId>
-                <version>10.0.0.Final</version>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>bom-stable</artifactId>
+                <version>${version.wildfly-swarm}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.1.10.Final</version>
+                <version>1.1.11.Final</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -66,8 +68,25 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
     <dependencies>
+        <!-- WildFly Swarm Fractions -->
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>cdi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>messaging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>ejb</artifactId>
+        </dependency>
         <!-- Java EE 7 API -->
         <dependency>
             <groupId>javax</groupId>
@@ -77,54 +96,18 @@
         </dependency>
         <!-- For Test -->
         <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>arquillian</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.arquillian.container</groupId>
-            <artifactId>arquillian-container-chameleon</artifactId>
-            <version>1.0.0.Alpha6</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.wildfly.arquillian</groupId>
-            <artifactId>wildfly-arquillian-protocol-jmx</artifactId>
-            <version>1.0.2.Final</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eu.ingwar.tools</groupId>
-            <artifactId>arquillian-suite-extension</artifactId>
-            <version>1.1.1</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.reflections</groupId>
-                    <artifactId>reflections</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.10</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-persistence-dbunit</artifactId>
-            <version>1.0.0.Alpha7</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-    
+
     <reporting>
         <plugins>
             <plugin>
@@ -132,23 +115,17 @@
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.5</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
         </plugins>
     </reporting>
-    
+
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.17</version>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                            <jboss.home>${jboss.home}</jboss.home>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
@@ -210,8 +187,15 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>wildfly-swarm-plugin</artifactId>
+                <version>${version.wildfly-swarm}</version>
+            </plugin>
+        </plugins>
     </build>
-    
+
     <profiles>
         <profile>
             <id>static-code-analysis-report</id>
@@ -255,5 +239,5 @@
             </build>
         </profile>
     </profiles>
-    
+
 </project>
