@@ -1,4 +1,4 @@
-package com.sightseekerstudio.javaee7.standard.examples.jms;
+package com.sightseekerstudio.javaee7.standard.examples.jaxrs;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -13,7 +13,7 @@ import javax.ws.rs.Path;
  * @author Kohei.Saito
  */
 @ApplicationScoped
-@Path("/")
+@Path("/jms")
 public class DemoMessageSendResource {
 
     @Inject

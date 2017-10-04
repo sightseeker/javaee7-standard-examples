@@ -1,4 +1,7 @@
 swarm:
+  messaging:
+    remote:
+        host: jms-demo
   messaging-activemq:
     servers:
       default:
