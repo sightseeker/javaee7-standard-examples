@@ -1,19 +1,17 @@
 version: "3"
 services:
     jaxrs:
-        image: java:8
+        image: sightseeker/java-dev:8
+        build: .
         hostname: jaxrs-demo
         volumes:
             - "./jaxrs:/jaxrs"
         ports:
             - 8080:8080
-            - 61616
         command: ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "/jaxrs/target/jaxrs-examples-swarm.jar"]
     jms:
-        image: java:8
+        image: sightseeker/java-dev:8
         hostname: jms-demo
         volumes:
             - "./jms:/jms"
-        ports:
-            - 61616
         command: ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "/jms/target/jms-examples-swarm.jar"]

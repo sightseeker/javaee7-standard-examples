@@ -6,18 +6,20 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import org.jboss.ejb3.annotation.ResourceAdapter;
 
 /**
  *
  * @author Kohei.Saito
  */
+@ResourceAdapter("remote-mq")
 @MessageDriven(name = "DemoMDB", activationConfig = {
     @ActivationConfigProperty(
             propertyName = "destinationLookup",
-            propertyValue = "/jms/topic/my-topic")
+            propertyValue = "/jms/queue/my-queue")
     ,@ActivationConfigProperty(
             propertyName = "destinationType",
-            propertyValue = "javax.jms.Topic")
+            propertyValue = "javax.jms.Queue")
 })
 public class DemoMDB implements MessageListener {
 

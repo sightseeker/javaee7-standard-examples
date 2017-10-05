@@ -1,11 +1,31 @@
 swarm:
-  messaging:
-    remote:
-        host: jms-demo
-  messaging-activemq:
-    servers:
-      default:
-        jms-queues:
-          my-queue: {}
-        jms-topics:
-          my-topic: {}
+    bind:
+        address: 0.0.0.0
+    messaging:
+        remote: true
+    network:
+        socket-binding-groups:
+            standard-sockets:
+                socket-bindings:
+                    activemq:
+                        port: 61616
+    messaging-activemq:
+        servers:
+          default:
+            jms-queues:
+                my-queue: {}
+            security-enabled: false
+            remote-acceptors:
+                netty-acceptor:
+                    socket-binding: activemq
+            remote-connectors:
+                netty-connector:
+                      socket-binding: activemq
+            http-connectors:
+                http-connector:
+                    socket-binding: http
+                    endpoint: http-acceptor
+            http-acceptors:
+                  http-acceptor:
+                    http-listener: default
+            jmx-management-enabled: true

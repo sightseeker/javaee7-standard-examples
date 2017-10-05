@@ -1,11 +1,15 @@
 swarm:
-  messaging:
-    remote:
-        host: jms-demo
-  messaging-activemq:
-    servers:
-      default:
-        jms-queues:
-          my-queue: {}
-        jms-topics:
-          my-topic: {}
+    bind:
+        address: 0.0.0.0
+    messaging-activemq:
+        servers:
+            default:
+                jms-queues:
+                    my-queue: {}
+    messaging:
+        remote:
+            name: remote-mq
+            host: jms
+            port: 61616
+            jndi-name: java:/jms/remote-mq
+    remote: true
